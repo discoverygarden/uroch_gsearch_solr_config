@@ -33,11 +33,17 @@
     <xsl:param name="pid">not provided</xsl:param>
     <xsl:param name="datastream">not provided</xsl:param>
     
-    <xsl:variable name="rawTextValue" select="normalize-space(text())"/>
+    <xsl:variable name="value" select="normalize-space(text())"/>
+    <xsl:variable name="rawTextValue">
+      <xsl:value-of select="$value"/>
+      <xsl:if test="$value != '' and ./@qualifier != ''">
+        <xsl:value-of select="concat(' ', ./@qualifier)"/>
+      </xsl:if>
+    </xsl:variable> 
 
     <xsl:variable name="textValue">
       <xsl:call-template name="get_ISO8601_date">
-        <xsl:with-param name="date" select="$rawTextValue"/>
+        <xsl:with-param name="date" select="$value"/>
         <xsl:with-param name="pid" select="$pid"/>
         <xsl:with-param name="datastream" select="$datastream"/>
       </xsl:call-template>
